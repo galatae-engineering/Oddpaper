@@ -1,10 +1,11 @@
+
 from robot import Robot
 import time
 import math
 import random
 
-COM_PORT = "COM4"
-r = Robot(port_name=COM_PORT, debug=True)
+
+r = Robot(False)
 
 #configuration
 SPEED= 30
@@ -23,6 +24,7 @@ def setup():
     ANGLE_DEG = -30  # Exemple -30°
 
     # Homing
+    r.reset_and_home_joints()
     #r.send_message_and_wait_conf("$H")
     r.set_joint_speed(SPEED)
 

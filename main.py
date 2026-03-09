@@ -3,20 +3,30 @@ from robot import Robot
 import time
 import math
 import random
+import RPi.GPIO as GPIO
 
+pin=4
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(4,GPIO.OUT)
 
 r = Robot(False)
 
 #configuration
-SPEED= 30
+SPEED= 50
 HORIZONTAL=176 # plan horizontale percu par le robot
 SHEET_Z_POS=-160
 
 SHEETS=[  
-    [448, 265, 0, HORIZONTAL, -120], #A1
-    [454, 94, 0, HORIZONTAL, -101], #A2
-    [454, -84, 0, HORIZONTAL, -79], #A3
-    [454, -255, 0, HORIZONTAL, -60] #A4
+    [448, 265, 0, HORIZONTAL, -118], #A1 #[280, 447, -32, 177, -116]
+    [454, 94, 0, HORIZONTAL, -99], #A2
+    [454, -84, 0, HORIZONTAL, -77], #A3
+    [454, -255, 0, HORIZONTAL, -58] #A4
+    #[-13, 497, -50, HORIZONTAL, -150] #B0
+    #[51, 345, -76, HORIZONTAL, -133] #B1
+    #[142, 184, -88, HORIZONTAL, -103] #B2
+    #[229, 33, -97, HORIZONTAL, -58] #B3
+    #[329, -123, -69, HORIZONTAL, -29] #B4
+    #[411, -272, -42, HORIZONTAL, -23] #B5
     ]
 
 
@@ -69,6 +79,7 @@ def touch_sheet(sheet_pos):
 def suck_sheet(sheet_pos):
     r.set_joint_speed(SPEED*0.10)
     #-> enable aspiration
+    GPIO.output(4, GPIO.HIGH)
     #vacuum cup adjstment
     r.jog([-5, 0, 0, 0, 0]) 
     r.jog([0, 0, -5, 0, 0])
@@ -83,6 +94,7 @@ def suck_sheet(sheet_pos):
 
 def drop_sheet(sheet_pos):
     #disable aspiration
+    GPIO.output(4, GPIO.LOW)
     time.sleep(2)
     r.set_joint_speed(SPEED*0.2)
     r.go_to_pose(sheet_pos) #go up sheet zone

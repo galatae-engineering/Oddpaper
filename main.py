@@ -4,6 +4,9 @@ import time
 import math
 import random
 import RPi.GPIO as GPIO
+import sys
+sys.path.append('../galatae-api/')
+from robot import Robot
 
 pin=4
 GPIO.setmode(GPIO.BCM)
